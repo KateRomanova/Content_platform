@@ -23,24 +23,27 @@
                         <img src="{{ cont.photo | media_filter }}">
                     </div>
                     <p class="card-text mb-auto">{{ cont.description|truncatechars:99 }}</p>
+                    {% if cont.subscription_price != None %}
                     <h5 class="mb-1 text-body-secondary">Стоимость подписки: {{ cont.subscription_price }} руб.</h5>
-                    <a href="#"
-                       class="mb-1 btn btn-success">Оформите подписку для продолжения
+                       <a class="mb-1 btn btn-info" href="{% url 'users:register' %}" role="button">Оформите подписку для продолжения
                     </a>
+                    {% else %}
+                    <div class="btn-group">
+                        <a class="mb-1 btn btn-success" href="{% url 'content:content_detail' cont.pk %}"
+                           role="button">Посмотреть (Бесплатный контент)</a>
+                    </div>
+                    {% endif %}
                     <a></a>
-                    <!--          <a href="{% url 'content:content_detail' cont.pk %}"-->
-                    <!--             class="icon-link gap-1 icon-link-hover stretched-link">-->
-                    <!--            Подробнее-->
-                    <!--            <svg class="bi"><use xlink:href="#chevron-right"/></svg>-->
-                    <!--          </a>-->
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
+                            {% if user == content.owner %}
                             <a class="btn btn-outline-success" href="{% url 'content:content_detail' cont.pk %}"
                                role="button">Посмотреть</a>
                             <a class="btn btn-outline-success" href="{% url 'content:content_update' cont.pk %}"
                                role="button">Редактировать</a>
                             <a class="btn btn-outline-success" href="{% url 'content:content_delete' cont.pk %}"
                                role="button">Удалить</a>
+                            {% endif %}
                         </div>
                         <small class="text-body-secondary"></small>
                     </div>

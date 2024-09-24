@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 
 class Category(models.Model):
     name = models.CharField(
@@ -60,6 +62,14 @@ class Content(models.Model):
         null=True,
         blank=True,
         related_name="categories",
+    )
+    owner = models.ForeignKey(
+        User,
+        verbose_name="Автор",
+        help_text="Укажите автора записи",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     def __str__(self):
