@@ -39,12 +39,12 @@
                         <a class="mb-1 btn btn-success" href="{% url 'content:content_detail' cont.pk %}"
                            role="button">Посмотреть</a>
                     </div>
+                    {% endif %}
                     {% if user == cont.owner %}
                     <a class="btn btn-outline-success" href="{% url 'content:content_update' cont.pk %}"
                        role="button">Редактировать</a>
                     <a class="btn btn-outline-success" href="{% url 'content:content_delete' cont.pk %}"
                        role="button">Удалить</a>
-                    {% endif %}
                     {% endif %}
                 </div>
             </div>
