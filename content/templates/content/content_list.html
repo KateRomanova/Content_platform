@@ -23,30 +23,29 @@
                         <img src="{{ cont.photo | media_filter }}">
                     </div>
                     <p class="card-text mb-auto">{{ cont.description|truncatechars:99 }}</p>
-                    {% if cont.subscription_price != None %}
-                    <h5 class="mb-1 text-body-secondary">Стоимость подписки: {{ cont.subscription_price }} руб.</h5>
-                       <a class="mb-1 btn btn-info" href="{% url 'users:register' %}" role="button">Оформите подписку для продолжения
+                    {% if cont.is_content_paid %}
+                    {% if user != cont.owner and not is_paid %}
+                    <a class="mb-1 btn btn-info" href="{% url 'users:paymentstripe' %}" role="button">Оформите подписку
+                        для продолжения
                     </a>
                     {% else %}
                     <div class="btn-group">
                         <a class="mb-1 btn btn-success" href="{% url 'content:content_detail' cont.pk %}"
-                           role="button">Посмотреть (Бесплатный контент)</a>
+                           role="button">Посмотреть</a>
                     </div>
                     {% endif %}
-                    <a></a>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            {% if user == content.owner %}
-                            <a class="btn btn-outline-success" href="{% url 'content:content_detail' cont.pk %}"
-                               role="button">Посмотреть</a>
-                            <a class="btn btn-outline-success" href="{% url 'content:content_update' cont.pk %}"
-                               role="button">Редактировать</a>
-                            <a class="btn btn-outline-success" href="{% url 'content:content_delete' cont.pk %}"
-                               role="button">Удалить</a>
-                            {% endif %}
-                        </div>
-                        <small class="text-body-secondary"></small>
+                    {% else %}
+                    <div class="btn-group">
+                        <a class="mb-1 btn btn-success" href="{% url 'content:content_detail' cont.pk %}"
+                           role="button">Посмотреть</a>
                     </div>
+                    {% if user == cont.owner %}
+                    <a class="btn btn-outline-success" href="{% url 'content:content_update' cont.pk %}"
+                       role="button">Редактировать</a>
+                    <a class="btn btn-outline-success" href="{% url 'content:content_delete' cont.pk %}"
+                       role="button">Удалить</a>
+                    {% endif %}
+                    {% endif %}
                 </div>
             </div>
         </div>

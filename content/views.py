@@ -11,10 +11,21 @@ from django.views.generic import (
 
 from content.forms import ContentForm
 from content.models import Content
+from users.services import check_payment_status
 
 
 class ContentListView(ListView):
     model = Content
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['is_paid'] = check_payment_status(self.request.user)
+        else:
+            context['is_paid'] = False
+        print(context['is_paid'])
+        return context
 
 
 class ContentDetailView(DetailView):

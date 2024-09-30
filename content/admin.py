@@ -11,7 +11,7 @@ class ContentAdmin(admin.ModelAdmin):
         "description",
         "photo",
         "publication_date",
-        "subscription_price",
+        "is_content_paid",
         "category",
     )
 

@@ -1,7 +1,5 @@
 from django.db import models
 
-from users.models import User
-
 
 class Category(models.Model):
     name = models.CharField(
@@ -48,11 +46,10 @@ class Content(models.Model):
         verbose_name="Дата публикации",
         help_text="Укажите дату публикации",
     )
-    subscription_price = models.IntegerField(
-        blank=True,
-        null=True,
-        verbose_name="Цена подписки",
-        help_text="Укажите цену за подписку",
+    is_content_paid = models.BooleanField(
+        default=False,
+        verbose_name="Платный ли контент",
+        help_text="Укажите, является ли контент платным",
     )
     category = models.ForeignKey(
         Category,
@@ -64,7 +61,7 @@ class Content(models.Model):
         related_name="categories",
     )
     owner = models.ForeignKey(
-        User,
+        "users.User",
         verbose_name="Автор",
         help_text="Укажите автора записи",
         blank=True,

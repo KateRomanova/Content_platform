@@ -2,6 +2,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+
 from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -114,3 +115,5 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
+
+STRIPE_API_KEY = "sk_test_51PqeuoLbuRoutauApkhonadq4Rs1dbXfR4J8TVx24T0zqToialW1AiBAR9uKTKl2rJ4oDfccxuFMFudcGrrUc2qz006yu2AAuj"
