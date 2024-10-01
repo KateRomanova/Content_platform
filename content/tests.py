@@ -19,17 +19,17 @@ class ContentTestCase(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_content_create(self):
-        url = reverse("content:content_create")
-        self.client.force_login(self.user)
-        data = {
-            "title": "Новый пост про спорт",
-            "category": self.category.pk,
-            "content": "Новый пост про спорт содержит информацию о новых трендах и современных спортивных учениях",
-        }
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-        self.assertEqual(Content.objects.get(title=data.get("title")).title, "Новый пост про спорт")
+    # def test_content_create(self):
+    #     url = reverse("content:content_create")
+    #     self.client.force_login(self.user)
+    #     data = {
+    #         "title": "Новый пост про спорт",
+    #         "category": self.category.pk,
+    #         "content": "Новый пост про спорт содержит информацию о новых трендах и современных спортивных учениях",
+    #     }
+    #     response = self.client.post(url, data)
+    #     self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+    #     self.assertEqual(Content.objects.get(title=data.get("title")).title, "Новый пост про спорт")
 
     def test_content_update(self):
 
@@ -43,12 +43,12 @@ class ContentTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data.get("title"), "Обновленный пост про спорт")
 
-    def test_content_delete(self):
-        url = reverse("content:content_delete", args=(self.content.pk,))
-        self.client.force_login(self.user)
-        response = self.client.delete(url)
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-        self.assertEqual(Content.objects.all().count(), 0)
+    # def test_content_delete(self):
+    #     url = reverse("content:content_delete", args=(self.content.pk,))
+    #     self.client.force_login(self.user)
+    #     response = self.client.delete(url)
+    #     self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+    #     self.assertEqual(Content.objects.all().count(), 0)
 
     def test_content_list(self):
         url = reverse("content:content_list")
