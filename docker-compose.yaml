@@ -7,15 +7,13 @@ services:
     restart: on-failure
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
-    volumes:
-      - pg_data:/var/lib/postgresql/data/pgdata
     healthcheck:
       test: ["CMD-SHELL", "-c", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
     env_file:
-      - .env
+      - .env.docker
 
   app:
     build: .
@@ -27,7 +25,4 @@ services:
       db:
         condition: service_healthy
     env_file:
-      - .env
-
-volumes:
-  pg_data:
+      - .env.docker
