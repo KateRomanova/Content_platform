@@ -7,11 +7,10 @@ services:
     restart: on-failure
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_HOST_AUTH_METHOD : trust
     volumes:
       - pg_data:/var/lib/postgresql/data/pgdata
     healthcheck:
-      test: ["CMD-SHELL", "-c", "pg_isready -U $DB_USER"]
+      test: ["CMD-SHELL", "-c", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
