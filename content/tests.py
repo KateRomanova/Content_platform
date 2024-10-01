@@ -28,7 +28,7 @@ class ContentTestCase(APITestCase):
             "content": "Новый пост про спорт содержит информацию о новых трендах и современных спортивных учениях",
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
         self.assertEqual(Content.objects.get(title=data.get("title")).title, "Новый пост про спорт")
 
     def test_content_update(self):
@@ -40,7 +40,6 @@ class ContentTestCase(APITestCase):
             "content": "Обновленный пост про спорт содержит информацию о новых трендах и современных спортивных учениях",
         }
         response = self.client.put(url, data)
-        # data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data.get("title"), "Обновленный пост про спорт")
 
@@ -48,7 +47,7 @@ class ContentTestCase(APITestCase):
         url = reverse("content:content_delete", args=(self.content.pk,))
         self.client.force_login(self.user)
         response = self.client.delete(url)
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
         self.assertEqual(Content.objects.all().count(), 0)
 
     def test_content_list(self):

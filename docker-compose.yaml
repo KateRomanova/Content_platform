@@ -6,11 +6,12 @@ services:
     image: postgres
     restart: on-failure
     environment:
-      POSTGRES_PASSWORD: mysecretpassword
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_HOST_AUTH_METHOD : trust
+    volumes:
+      - pg_data:/var/lib/postgresql/data/pgdata
     healthcheck:
-      test: ["CMD-SHELL", "-c", "pg_isready -U $POSTGRES_USER"]
+      test: ["CMD-SHELL", "-c", "pg_isready -U $DB_USER"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -20,7 +21,7 @@ services:
   app:
     build: .
     tty: true
-    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     depends_on:
@@ -29,26 +30,5 @@ services:
     env_file:
       - .env
 
-  celery:
-    build: .
-    tty: true
-    command: celery -A config worker -l info
-    restart: on-failure
-    depends_on:
-      - redis
-      - db
-      - app
-    env_file:
-      - .env
-
-  celery-beat:
-    build: .
-    tty: true
-    command: celery -A config beat -l info
-    restart: on-failure
-    depends_on:
-      - redis
-      - db
-      - app
-    env_file:
-      - .env
+volumes:
+  pg_data:
