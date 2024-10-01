@@ -1,14 +1,15 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-
-
-
 from django.urls import reverse_lazy
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-c*r$-$@+9bj5(lt-$akv&^p(29661j)u)uv((he201yj@g4ekr"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = True
 
@@ -59,11 +60,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "content",
-        "USER": "postgres",
-        "PASSWORD": "Shutka757",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": os.getenv("NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("PASSWORD"),
+        "HOST": os.getenv("HOST"),
+        "PORT": os.getenv("PORT"),
     }
 }
 
@@ -117,4 +118,4 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
-STRIPE_API_KEY = "sk_test_51PqeuoLbuRoutauApkhonadq4Rs1dbXfR4J8TVx24T0zqToialW1AiBAR9uKTKl2rJ4oDfccxuFMFudcGrrUc2qz006yu2AAuj"
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
