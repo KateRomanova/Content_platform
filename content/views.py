@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -28,8 +28,19 @@ class ContentListView(ListView):
         return context
 
 
-class ContentDetailView(DetailView):
+class ContentDetailView(UserPassesTestMixin, DetailView):
     model = Content
+
+    def test_func(self):
+        if not self.request.user.is_authenticated and self.get_object().is_content_paid:
+            return False
+        elif not self.request.user.is_authenticated and not self.get_object().is_content_paid:
+            return True
+        elif self.request.user.is_authenticated and self.get_object().owner == self.request.user:
+            return True
+        elif not check_payment_status(self.request.user) and self.get_object().is_content_paid:
+            return False
+        return True
 
 
 class ContentCreateView(CreateView, LoginRequiredMixin):
@@ -45,12 +56,34 @@ class ContentCreateView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class ContentUpdateView(UpdateView):
+class ContentUpdateView(UserPassesTestMixin, UpdateView):
     model = Content
     form_class = ContentForm
     success_url = reverse_lazy("content:content_list")
 
+    def test_func(self):
+        if not self.request.user.is_authenticated and self.get_object().is_content_paid:
+            return False
+        elif not self.request.user.is_authenticated and not self.get_object().is_content_paid:
+            return True
+        elif self.request.user.is_authenticated and self.get_object().owner == self.request.user:
+            return True
+        elif not check_payment_status(self.request.user) and self.get_object().is_content_paid:
+            return False
+        return True
 
-class ContentDeleteView(DeleteView):
+
+class ContentDeleteView(UserPassesTestMixin, DeleteView):
     model = Content
     success_url = reverse_lazy("content:content_list")
+
+    def test_func(self):
+        if not self.request.user.is_authenticated and self.get_object().is_content_paid:
+            return False
+        elif not self.request.user.is_authenticated and not self.get_object().is_content_paid:
+            return True
+        elif self.request.user.is_authenticated and self.get_object().owner == self.request.user:
+            return True
+        elif not check_payment_status(self.request.user) and self.get_object().is_content_paid:
+            return False
+        return True
