@@ -17,5 +17,5 @@ class ContentAdmin(admin.ModelAdmin):
 
 
 @admin.register(Category)
-class ContentAdmin(admin.ModelAdmin):
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "name")

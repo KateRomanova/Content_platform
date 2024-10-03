@@ -1,7 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils.timezone import now
-from content.models import Content
 
 payment_choices = (
     ("Наличные", "Наличные"),

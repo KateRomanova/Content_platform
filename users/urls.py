@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from users.apps import UsersConfig
-from users.views import UserCreateView, NewPasswordView, redirect_to_payment
+from users.views import UserCreateView, redirect_to_payment
 
 app_name = UsersConfig.name
 
